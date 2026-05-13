@@ -11,7 +11,7 @@ export class ChatService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.aiBackendUrl = this.configService.get<string>('AI_BACKEND_URL', 'http://localhost:8000');
+    this.aiBackendUrl = this.configService.get<string>('AI_BACKEND_URL', 'http://ai-backend-service:8000');
   }
 
   async getChatReply(message: string, history: any[]) {

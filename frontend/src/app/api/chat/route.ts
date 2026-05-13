@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const { message, history } = await request.json();
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:4000/api/chat';
+    const backendUrl = process.env.BACKEND_URL || 'http://backend-service:4000/api/chat';
 
     const response = await fetch(backendUrl, {
       method: 'POST',
