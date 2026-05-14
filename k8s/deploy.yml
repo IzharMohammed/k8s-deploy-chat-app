@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: ai-backend
-        image: izhardev/ai-backend:v1
+        image: izhardev/ai-backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         env:
@@ -54,7 +55,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: izhardev/backend:v1
+        image: izhardev/backend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 4000
         env:
@@ -90,7 +92,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: izhardev/frontend:v1
+        image: izhardev/frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         env:
