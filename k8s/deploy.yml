@@ -95,7 +95,7 @@ spec:
         - containerPort: 3000
         env:
         - name: BACKEND_URL
-          value: "http://backend-service:4000"
+          value: "http://backend-service:4000/chat"
 ---
 apiVersion: v1
 kind: Service
