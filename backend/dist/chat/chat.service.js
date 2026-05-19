@@ -21,7 +21,7 @@ let ChatService = class ChatService {
     constructor(httpService, configService) {
         this.httpService = httpService;
         this.configService = configService;
-        this.aiBackendUrl = this.configService.get('AI_BACKEND_URL', 'http://localhost:8000');
+        this.aiBackendUrl = this.configService.get('AI_BACKEND_URL', 'http://ai-backend-service:8000');
     }
     async getChatReply(message, history) {
         const payload = {
