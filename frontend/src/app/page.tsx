@@ -54,7 +54,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-slate-900">
       {/* Header */}
       <header className="bg-white border-b p-4 shadow-sm">
         <h1 className="text-xl font-bold text-gray-800 text-center">k8s learning</h1>
