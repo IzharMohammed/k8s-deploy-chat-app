@@ -7,7 +7,15 @@ interface Message {
   content: string;
 }
 
+interface ChatHistoryItem {
+  id: string;
+  userMessage: string;
+  aiReply: string;
+  createdAt: string;
+}
+
 export default function ChatPage() {
+  const [historyMessages, setHistoryMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,8 +26,32 @@ export default function ChatPage() {
   };
 
   useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('/api/chats');
+        if (!response.ok) throw new Error('Failed to fetch chat history');
+        const data: ChatHistoryItem[] = await response.json();
+        
+        // Show chats in order oldest to newest. NestJS returns them DESC (newest first).
+        const sortedChats = [...data].reverse();
+        
+        const history: Message[] = [];
+        for (const chat of sortedChats) {
+          history.push({ role: 'user', content: chat.userMessage });
+          history.push({ role: 'assistant', content: chat.aiReply });
+        }
+        setHistoryMessages(history);
+      } catch (error) {
+        console.error('Error fetching chat history:', error);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, historyMessages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +68,7 @@ export default function ChatPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: input,
-          history: messages.map(m => ({ role: m.role, content: m.content })),
+          history: [...historyMessages, ...messages].map(m => ({ role: m.role, content: m.content })),
         }),
       });
 
@@ -53,23 +85,56 @@ export default function ChatPage() {
     }
   };
 
+  const hasAnyMessages = historyMessages.length > 0 || messages.length > 0;
+
   return (
     <div className="flex flex-col h-screen bg-slate-900">
       {/* Header */}
-      <header className="bg-white border-b p-4 shadow-sm">
+      <header className="bg-white border-b p-4 shadow-sm z-10">
         <h1 className="text-xl font-bold text-gray-800 text-center">k8s learning</h1>
       </header>
 
       {/* Messages Area */}
       <main className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 && (
+        {!hasAnyMessages && !isLoading && (
           <div className="flex items-center justify-center h-full text-gray-400">
             Start a conversation...
           </div>
         )}
+
+        {/* Loaded History */}
+        {historyMessages.map((msg, index) => (
+          <div
+            key={`history-${index}`}
+            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-[80%] p-3 rounded-lg shadow-sm ${
+                msg.role === 'user'
+                  ? 'bg-blue-600/80 text-white rounded-br-none border border-blue-500/20 backdrop-blur-sm'
+                  : 'bg-white/95 text-gray-800 border border-gray-200/50 rounded-bl-none backdrop-blur-sm'
+              }`}
+            >
+              {msg.content}
+            </div>
+          </div>
+        ))}
+
+        {/* Premium Divider separating Loaded History from Current Session */}
+        {historyMessages.length > 0 && (
+          <div className="flex items-center my-8">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
+            <span className="px-5 py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-slate-400 bg-slate-800/90 border border-slate-700 rounded-full shadow-lg select-none backdrop-blur-md">
+              Loaded History
+            </span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
+          </div>
+        )}
+
+        {/* Current Active Session Messages */}
         {messages.map((msg, index) => (
           <div
-            key={index}
+            key={`session-${index}`}
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
@@ -83,8 +148,10 @@ export default function ChatPage() {
             </div>
           </div>
         ))}
+
+        {/* Loading / Typing indicator */}
         {isLoading && (
-          <div className="flex justify-start">
+          <div className="flex justify-start animate-pulse">
             <div className="bg-white text-gray-400 border p-3 rounded-lg rounded-bl-none italic">
               AI is typing...
             </div>

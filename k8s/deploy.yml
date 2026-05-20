@@ -62,6 +62,19 @@ spec:
         env:
         - name: AI_BACKEND_URL
           value: "http://ai-backend-service:8000"
+        - name: DB_HOST
+          value: "postgres-service"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: "chatapp"
+        - name: DB_USER
+          value: "chatuser"
+        - name: DB_PASSWORD
+          valueFrom:
+          secretKeyRef:
+            name: pg-secret
+            key: password
 ---
 apiVersion: v1
 kind: Service
