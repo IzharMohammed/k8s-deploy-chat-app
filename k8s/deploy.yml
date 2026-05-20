@@ -72,7 +72,7 @@ spec:
           value: "chatuser"
         - name: DB_PASSWORD
           valueFrom:
-          secretKeyRef:
+           secretKeyRef:
             name: pg-secret
             key: password
 ---
