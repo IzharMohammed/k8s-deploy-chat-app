@@ -45,7 +45,7 @@ spec:
       name: pg-storage
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: longhorn       # ← Longhorn handles replication
+      storageClassName: longhorn-v1       # ← Longhorn handles replication
       resources:
         requests:
           storage: 200Mi
