@@ -48,7 +48,7 @@ spec:
       storageClassName: longhorn       # ← Longhorn handles replication
       resources:
         requests:
-          storage: 2Gi
+          storage: 200Mi
 ---
 # ── Headless Service (required for StatefulSet) ───────────────
 apiVersion: v1

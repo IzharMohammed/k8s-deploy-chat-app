@@ -113,8 +113,19 @@ spec:
         - name: BACKEND_URL
           value: "http://backend-service:4000/api/chat"
 ---
+# apiVersion: v1
+# kind: Service 
+# metadata:
+#   name: frontend-service
+# spec:
+#   type: ClusterIP
+#   selector:
+#     app: frontend
+#   ports:
+#   - port: 3000
+#     targetPort: 3000
 apiVersion: v1
-kind: ClusterIp 
+kind: Service
 metadata:
   name: frontend-service
 spec:
@@ -124,4 +135,4 @@ spec:
   ports:
   - port: 3000
     targetPort: 3000
-    
+    nodePort: 30080   
