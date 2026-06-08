@@ -84,7 +84,8 @@ spec:
   selector:
     app: backend
   ports:
-  - port: 4000
+  - name: http
+    port: 4000
     targetPort: 4000
 
 # ── Next.js Frontend ─────────────────────────────────────────

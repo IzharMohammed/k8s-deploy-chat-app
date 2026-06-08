@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChatModule } from './chat/chat.module';
 
+import { MonitoringModule } from './monitoring/monitoring.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -21,6 +23,7 @@ import { ChatModule } from './chat/chat.module';
       }),
     }),
     ChatModule,
+    MonitoringModule,
   ],
   controllers: [],
   providers: [],
