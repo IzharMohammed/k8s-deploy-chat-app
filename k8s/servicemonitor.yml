@@ -1,10 +1,30 @@
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: backend-monitor
+#   namespace: monitoring
+#   labels:
+#     release: kind-prometheus # This label is important. The kube-prometheus-stack selects ServiceMonitors with this label by default.
+# spec:
+#   selector:
+#     matchLabels:
+#       app: backend
+#   endpoints:
+#   - port: http
+#     path: /metrics
+#     interval: 15s
+# k8s/servicemonitor.yml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: backend-monitor
+  namespace: monitoring
   labels:
-    release: kube-prometheus # This label is important. The kube-prometheus-stack selects ServiceMonitors with this label by default.
+    release: kind-prometheus
 spec:
+  namespaceSelector:          # ← ADD THIS
+    matchNames:
+    - default                 # ← look for backend service in default namespace
   selector:
     matchLabels:
       app: backend
