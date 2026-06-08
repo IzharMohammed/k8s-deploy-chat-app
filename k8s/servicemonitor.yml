@@ -3,7 +3,7 @@ kind: ServiceMonitor
 metadata:
   name: backend-monitor
   labels:
-    release: prometheus # This label is important. The kube-prometheus-stack selects ServiceMonitors with this label by default.
+    release: kube-prometheus # This label is important. The kube-prometheus-stack selects ServiceMonitors with this label by default.
 spec:
   selector:
     matchLabels:
