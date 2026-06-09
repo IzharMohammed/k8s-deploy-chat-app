@@ -9,7 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const typeorm_1 = require("@nestjs/typeorm");
 const chat_module_1 = require("./chat/chat.module");
+const monitoring_module_1 = require("./monitoring/monitoring.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -17,7 +19,22 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => ({
+                    type: 'postgres',
+                    host: configService.get('DB_HOST', 'postgres-service'),
+                    port: parseInt(configService.get('DB_PORT', '5432'), 10),
+                    username: configService.get('DB_USER'),
+                    password: configService.get('DB_PASSWORD'),
+                    database: configService.get('DB_NAME'),
+                    synchronize: true,
+                    autoLoadEntities: true,
+                }),
+            }),
             chat_module_1.ChatModule,
+            monitoring_module_1.MonitoringModule,
         ],
         controllers: [],
         providers: [],

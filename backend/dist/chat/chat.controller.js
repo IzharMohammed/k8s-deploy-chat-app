@@ -24,17 +24,26 @@ let ChatController = class ChatController {
         const { message, history } = body;
         return this.chatService.getChatReply(message, history);
     }
+    async getAllChats() {
+        return this.chatService.getAllChats();
+    }
 };
 exports.ChatController = ChatController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('chat'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ChatController.prototype, "chat", null);
+__decorate([
+    (0, common_1.Get)('chats'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getAllChats", null);
 exports.ChatController = ChatController = __decorate([
-    (0, common_1.Controller)('chat'),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [chat_service_1.ChatService])
 ], ChatController);
 //# sourceMappingURL=chat.controller.js.map

@@ -6,4 +6,5 @@ export declare class ChatController {
         message: string;
         history: any[];
     }): Promise<any>;
+    getAllChats(): Promise<import("./chat.entity").Chat[]>;
 }

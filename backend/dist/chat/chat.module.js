@@ -10,14 +10,20 @@ exports.ChatModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const config_1 = require("@nestjs/config");
+const typeorm_1 = require("@nestjs/typeorm");
 const chat_controller_1 = require("./chat.controller");
 const chat_service_1 = require("./chat.service");
+const chat_entity_1 = require("./chat.entity");
 let ChatModule = class ChatModule {
 };
 exports.ChatModule = ChatModule;
 exports.ChatModule = ChatModule = __decorate([
     (0, common_1.Module)({
-        imports: [axios_1.HttpModule, config_1.ConfigModule],
+        imports: [
+            axios_1.HttpModule,
+            config_1.ConfigModule,
+            typeorm_1.TypeOrmModule.forFeature([chat_entity_1.Chat]),
+        ],
         controllers: [chat_controller_1.ChatController],
         providers: [chat_service_1.ChatService],
     })
