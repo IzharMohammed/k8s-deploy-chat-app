@@ -93,6 +93,10 @@ helm install kind-prometheus \
   --set kubeScheduler.endpoints[0]=172.31.86.181 \
   --set kubeEtcd.endpoints[0]=172.31.86.181 \
   --set kubeProxy.enabled=false
+  
+  
+# replace 172.31.86.181 with your master node internal IP
+
 
 # watch all pods come up (takes 3-4 mins)
 kubectl get pods -n monitoring -w
