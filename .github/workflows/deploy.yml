@@ -54,7 +54,13 @@ jobs:
             cd k8s-deployment
             git pull origin main
             kubectl apply -f k8s/configmap.yml
+            kubectl apply -f k8s/longhorn-storageclass.yaml
+            kubectl apply -f k8s/postgres.yml
             kubectl apply -f k8s/deploy.yml
+            kubectl apply -f k8s/longhorn-ui-nodeport.yaml
+            kubectl apply -f k8s/servicemonitor.yml
+            kubectl apply -f k8s/frontend-ingress.yml
+            kubectl apply -f k8s/monitoring-ingress.yml
             kubectl rollout restart deployment ai-backend
             kubectl rollout restart deployment backend
             kubectl rollout restart deployment frontend
