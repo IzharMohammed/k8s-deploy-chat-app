@@ -60,16 +60,41 @@ spec:
         ports:
         - containerPort: 4000
         env:
+        # - name: AI_BACKEND_URL
+        #   value: "http://ai-backend-service:8000"
+        # - name: DB_HOST
+        #   value: "postgres-service"
+        # - name: DB_PORT
+        #   value: "5432"
+        # - name: DB_NAME
+        #   value: "chatapp"
+        # - name: DB_USER
+        #   value: "chatuser"
         - name: AI_BACKEND_URL
-          value: "http://ai-backend-service:8000"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: ai-backend-url
         - name: DB_HOST
-          value: "postgres-service"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: db-host
         - name: DB_PORT
-          value: "5432"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: db-port
         - name: DB_NAME
-          value: "chatapp"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: db-name
         - name: DB_USER
-          value: "chatuser"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: db-user
         - name: DB_PASSWORD
           valueFrom:
            secretKeyRef:
@@ -111,8 +136,13 @@ spec:
         ports:
         - containerPort: 3000
         env:
+        # - name: BACKEND_URL
+        #   value: "http://backend-service:4000/api/chat"
         - name: BACKEND_URL
-          value: "http://backend-service:4000/api/chat"
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: backend-url
 ---
 # apiVersion: v1
 # kind: Service 
