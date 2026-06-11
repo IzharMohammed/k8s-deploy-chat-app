@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chat-app
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/IzharMohammed/k8s-deploy-chat-app
+    targetRevision: main
+    path: k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    automated:
+      prune: true       # delete removed resources
+      selfHeal: true    # revert manual changes
+    syncOptions:
+    - CreateNamespace=true
