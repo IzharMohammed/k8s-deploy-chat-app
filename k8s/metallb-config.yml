@@ -8,6 +8,7 @@ spec:
   - 172.31.22.128/32      # ← worker1 internal IP
   - 172.31.31.161/32      # ← worker2 internal IP
 ---
+
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
