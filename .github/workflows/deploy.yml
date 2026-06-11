@@ -53,9 +53,12 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            kubectl rollout restart deployment ai-backend
-            kubectl rollout restart deployment backend
-            kubectl rollout restart deployment frontend
+             cd k8s-deployment || git clone https://github.com/${{ github.repository }} k8s-deployment
+             cd k8s-deployment
+             git pull origin main
+             kubectl rollout restart deployment ai-backend
+             kubectl rollout restart deployment backend
+             kubectl rollout restart deployment frontend
  
  
       # - name: SSH into Master and Deploy
