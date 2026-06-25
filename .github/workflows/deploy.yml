@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - test
 
 jobs:
   build-and-deploy:
@@ -91,7 +91,7 @@ jobs:
           script: |
             cd k8s-deployment || git clone https://github.com/${{ github.repository }} k8s-deployment
             cd k8s-deployment
-            git pull origin main
+            git pull origin test
             kubectl apply -f k8s/configmap.yml
             kubectl apply -f k8s/longhorn-storageclass.yaml
             kubectl apply -f k8s/postgres.yml
