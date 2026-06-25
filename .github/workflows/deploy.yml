@@ -46,19 +46,19 @@ jobs:
       # ── REMOVED: kubectl apply lines (ArgoCD handles this now) ──
       # ── KEPT: rollout restart only (forces pods to pull new :latest image) ──
  
-      - name: Force pods to pull new images
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd k8s-deployment || git clone https://github.com/${{ github.repository }} k8s-deployment
-            cd k8s-deployment
-            git pull origin main
-            kubectl rollout restart deployment ai-backend
-            kubectl rollout restart deployment backend
-            kubectl rollout restart deployment frontend
+      # - name: Force pods to pull new images
+      #   uses: appleboy/ssh-action@v1.2.0
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd k8s-deployment || git clone https://github.com/${{ github.repository }} k8s-deployment
+      #       cd k8s-deployment
+      #       git pull origin main
+      #       kubectl rollout restart deployment ai-backend
+      #       kubectl rollout restart deployment backend
+      #       kubectl rollout restart deployment frontend
  
       # - name: SSH into Master and Deploy
       #   uses: appleboy/ssh-action@v1.2.0
@@ -81,3 +81,22 @@ jobs:
       #       kubectl rollout restart deployment ai-backend
       #       kubectl rollout restart deployment backend
       #       kubectl rollout restart deployment frontend
+
+      - name: SSH into Master and Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd k8s-deployment || git clone https://github.com/${{ github.repository }} k8s-deployment
+            cd k8s-deployment
+            git pull origin main
+            kubectl apply -f k8s/configmap.yml
+            kubectl apply -f k8s/longhorn-storageclass.yaml
+            kubectl apply -f k8s/postgres.yml
+            kubectl apply -f k8s/deploy.yml
+            kubectl apply -f k8s/longhorn-ui-nodeport.yaml
+            kubectl rollout restart deployment ai-backend
+            kubectl rollout restart deployment backend
+            kubectl rollout restart deployment fronte
